@@ -1,0 +1,41 @@
+FROM --platform=linux/amd64 amd64/php:8.4-apache
+
+# Enable Apache rewrite module
+RUN a2enmod rewrite
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    git build-essential libssl-dev curl unzip && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install wrk from source
+RUN git clone https://github.com/wg/wrk.git /tmp/wrk && \
+    cd /tmp/wrk && make && cp wrk /usr/local/bin && \
+    rm -rf /tmp/wrk
+
+# Copy script file and make it executable
+COPY script/run.sh /home/benchmark/run.sh
+RUN chmod 755 /home/benchmark/run.sh
+
+# Copy both Dockerfiles into the container (for display purposes)
+COPY Dockerfile.amd64 /var/www/
+COPY Dockerfile.arm64 /var/www/
+COPY script/run.sh /var/www/
+
+# Copy application source
+COPY ./public/ /var/www/html/
+
+# Install Composer dependencies
+COPY composer.json /var/www/
+WORKDIR /var/www/
+RUN apt-get update && apt-get install -y git unzip && \
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
+    composer install --no-dev --optimize-autoloader || true
+
+# Set correct permissions
+RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 80
+
+CMD ["apache2-foreground"]
