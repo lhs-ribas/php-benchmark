@@ -20,6 +20,8 @@ RUN chmod 755 /home/benchmark/run.sh
 # Copy both Dockerfiles into the container (for display purposes)
 COPY Dockerfile.amd64 /var/www/
 COPY Dockerfile.arm64 /var/www/
+COPY Dockerfile.fpm.amd64 /var/www/
+COPY Dockerfile.fpm.arm64 /var/www/
 COPY script/run.sh /var/www/
 
 # Copy application source

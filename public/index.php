@@ -40,6 +40,17 @@ echo "<li>Benchmark results will be written to: <code>/benchmark_results_full_wr
 echo "</ul>";
 
 echo "<h2>📄 Configuration Files</h2>";
+
+echo "<h3>amd64/php:8.4-apache</h3>";
 showCodeFile("Dockerfile (amd64)", "/var/www/Dockerfile.amd64");
+
+echo "<h3>arm64v8/php:8.4-apache</h3>";
 showCodeFile("Dockerfile (arm64)", "/var/www/Dockerfile.arm64");
+
+echo "<h3>amd64/php:8.4-fpm</h3>";
+showCodeFile("Dockerfile (amd64)", "/var/www/Dockerfile.fpm.amd64");
+
+echo "<h3>arm64v8/php:8.4-fpm</h3>";
+showCodeFile("Dockerfile (arm64)", "/var/www/Dockerfile.fpm.arm64");
+
 showCodeFile("Benchmark Script: /home/benchmark/run.sh", "/var/www/run.sh");
