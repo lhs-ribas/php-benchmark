@@ -1,7 +1,9 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: phpbenchmarks-arm64
+  namespace: phpbenchmarks
   labels:
     app: phpbenchmarks
     arch: arm64
@@ -20,6 +22,11 @@ spec:
       nodeSelector:
         node-pool: c4a
         instance-type: c4a-standard-4
+      tolerations:
+        - key: "kubernetes.io/arch"
+          operator: "Equal"
+          value: "arm64"
+          effect: "NoSchedule"
       containers:
         - name: phpbench-arm64
           image: lhsribas/phpbenchmarks:8.4-fpm-arm64
@@ -30,3 +37,11 @@ spec:
               value: "8080"
             - name: CONNECTIONS
               value: "1 5 10 100 500 1000 2000 5000 10000"
+          volumeMounts:
+            - name: report-volume
+              mountPath: /mnt/reports
+      volumes:
+        - name: report-volume
+          persistentVolumeClaim:
+            claimName: phpbenchmarks-report-c4a-pvc
+---

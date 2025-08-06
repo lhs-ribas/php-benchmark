@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: phpbenchmarks-amd64
+  namespace: phpbenchmarks
   labels:
     app: phpbenchmarks
     arch: amd64

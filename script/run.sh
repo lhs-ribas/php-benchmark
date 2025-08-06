@@ -6,15 +6,15 @@ PORT="${BENCHMARK_APP_PORT:-8080}"
 # === Auto-versioned output ===
 base_output="benchmark_results_full_wrk_output"
 ext=".md"
-OUTPUT="./${base_output}${ext}"
+output_dir="/mnt/reports"
+OUTPUT="${output_dir}/${base_output}${ext}"
 
-# If file exists, find next version
 if [[ -f "$OUTPUT" ]]; then
   i=1
-  while [[ -f "${base_output}_v${i}${ext}" ]]; do
+  while [[ -f "${output_dir}/${base_output}_v${i}${ext}" ]]; do
     ((i++))
   done
-  OUTPUT="./${base_output}_v${i}${ext}"
+  OUTPUT="${output_dir}/${base_output}_v${i}${ext}"
 fi
 
 echo "Writing output to: $OUTPUT"
