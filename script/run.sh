@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script runs benchmarks against a PHP application using wrk.
-PORT="${BENCHMARK_APP_PORT:-80}"
+PORT="${BENCHMARK_APP_PORT:-8080}"
 
 # === Auto-versioned output ===
 base_output="benchmark_results_full_wrk_output"

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpbenchmarks-arm64
+  labels:
+    app: phpbenchmarks
+    arch: arm64
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phpbenchmarks
+      arch: arm64
+  template:
+    metadata:
+      labels:
+        app: phpbenchmarks
+        arch: arm64
+    spec:
+      nodeSelector:
+        node-pool: c4a
+        instance-type: c4a-standard-4
+      containers:
+        - name: phpbench-arm64
+          image: lhsribas/phpbenchmarks:8.4-fpm-arm64
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BENCHMARK_APP_PORT
+              value: "8080"
+            - name: CONNECTIONS
+              value: "1 5 10 100 500 1000 2000 5000 10000"
